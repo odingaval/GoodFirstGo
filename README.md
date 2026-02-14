@@ -1,97 +1,157 @@
-Project Plan: Open-Source Contribution Helper (Go)
-Goal
+# GoodFirstGo 
 
-Create a CLI tool (and optionally a web interface later) that helps developers find beginner-friendly issues in GitHub repositories.
+[![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat&logo=go)](https://go.dev/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-Core Features (MVP)
+> A powerful CLI tool to help developers discover beginner-friendly open-source issues on GitHub
 
-Search GitHub issues by criteria
+**GoodFirstGo** makes it easy to find your next open-source contribution by searching GitHub for issues labeled with `good-first-issue`, `help-wanted`, and other beginner-friendly tags. Perfect for developers looking to contribute to open source!
 
-Language (Go, Python, etc.)
+---
 
-Labels (good-first-issue, help-wanted)
+## ✨ Features
 
-Activity (recently updated)
+### Current Features (MVP)
+-  **Smart Issue Search** - Find GitHub issues by language, labels, and activity
+- **Advanced Filtering** - Filter by repository stars, forks, and issue age
+- **Detailed Display** - View issue title, repository, link, and labels in a clean CLI format
+- **Save Favorites** - Bookmark interesting issues locally for later reference
+- **Fast & Lightweight** - Built with Go for optimal performance
 
-Display issue details in CLI
+### Planned Features
+- **Web Dashboard** - Interactive web interface with advanced search and filters
+- **Notifications** - Get alerts for new beginner-friendly issues in your favorite languages
+- **GitHub Integration** - Authenticate to star, comment, and interact with issues directly
+- **Analytics** - Discover which repositories have the most beginner-friendly issues
 
-Title, repository, link, labels
+---
 
-Optional: brief description
+## Tech Stack
 
-Filter issues
+- **Language**: Go 1.21+
+- **HTTP Client**: `net/http` (standard library)
+- **JSON Parsing**: `encoding/json` (standard library)
+- **CLI Framework**: [Cobra](https://github.com/spf13/cobra) or [urfave/cli](https://github.com/urfave/cli)
+- **GitHub API**: [go-github](https://github.com/google/go-github) (optional)
 
-By repository stars or forks
+---
 
-By issue age (recent vs old)
+##  Installation
 
-Optional: Save favorite issues
+### Prerequisites
+- Go 1.21 or higher
+- GitHub Personal Access Token (for higher API rate limits)
 
-Local JSON or YAML file
+### From Source
+```bash
+# Clone the repository
+git clone https://github.com/odingaval/GoodFirstGo.git
+cd GoodFirstGo
 
-Track issues you want to work on
+# Initialize Go module
+go mod init github.com/odingaval/GoodFirstGo
 
-Advanced / Future Features
+# Install dependencies
+go mod tidy
 
-Web dashboard with search and filters
+# Build the binary
+go build -o goodfirstgo
 
-Notifications (e.g., new beginner-friendly issues in chosen languages)
+# (Optional) Install globally
+go install
+```
 
-Integration with GitHub authentication (to allow starring, commenting)
+---
 
-Analytics: which repos have most beginner-friendly issues
+## Usage
 
-Tech Stack / Libraries
+### Basic Search
+```bash
+# Search for Go issues with 'good-first-issue' label
+goodfirstgo search --language go --label good-first-issue
 
-Go standard library for HTTP requests: net/http
+# Search for Python issues with 'help-wanted' label
+goodfirstgo search --language python --label help-wanted
+```
 
-JSON parsing: encoding/json
+### Advanced Filtering
+```bash
+# Filter by minimum stars
+goodfirstgo search --language javascript --stars 100+
 
-CLI framework: cobra or urfave/cli
+# Filter by issue age (recent issues only)
+goodfirstgo search --language rust --age recent
 
-Optional: go-github (official GitHub API client for Go)
+# Combine multiple filters
+goodfirstgo search --language go --label good-first-issue --stars 500+ --age recent
+```
 
-Step-by-Step Roadmap (6 Weeks)
-Week 1 – 2: Core CLI
+### Managing Favorites
+```bash
+# Save an issue to favorites
+goodfirstgo save <issue-url>
 
-Set up a Go module (go mod init)
+# List saved issues
+goodfirstgo list
 
-Implement a simple CLI that takes language and label as input
+# Remove from favorites
+goodfirstgo remove <issue-id>
+```
 
-Fetch GitHub issues using GitHub API
+---
 
-Display issue title, repo, and URL in terminal
+## 📅 Development Roadmap
 
-Week 3: Filters
+| Week | Focus Area | Tasks |
+|------|-----------|-------|
+| **1-2** | Core CLI | Set up Go module, implement basic search, fetch GitHub issues, display results |
+| **3** | Filters | Add filtering by stars/forks/date, refactor code structure |
+| **4** | Favorites | Implement local storage (JSON/YAML), add save/list commands |
+| **5** | Error Handling | Handle rate-limiting, HTTP errors, add logging and validation |
+| **6** | Polish | Clean UI, comprehensive documentation, prepare for release |
 
-Add filtering by stars, forks, and date
+---
 
-Refactor code into reusable functions and structs
+##  Contributing
 
-Week 4: Local Favorites
+Contributions are welcome! This project itself is designed to help beginners contribute to open source, so we're especially friendly to first-time contributors.
 
-Add ability to save favorite issues in JSON/YAML
+### How to Contribute
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-Add CLI command to view saved issues
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
-Week 5: Error Handling & Logging
+---
 
-Handle rate-limiting, HTTP errors, invalid inputs
+## Debugging & Best Practices
 
-Add logs for debugging
+This project emphasizes learning through debugging:
+- Structured error handling using `errors.Is` and custom errors
+- Comprehensive logging for HTTP requests and API responses
+- Minimal reproducible debugging techniques
+- Rate-limiting and retry logic for GitHub API
 
-Week 6: Polish & Documentation
+---
 
-Clean CLI interface
+##  License
 
-Add README with examples
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Optional: publish as a small Go binary on GitHub
+---
 
-Debugging & Learning Focus
+## Contact
 
-Use logging to track HTTP requests and responses
+**Project Maintainer**: [@odingaval](https://github.com/odingaval)
 
-Add structured error handling (errors.Is, custom errors)
+**Project Link**: [https://github.com/odingaval/GoodFirstGo](https://github.com/odingaval/GoodFirstGo)
 
-Practice minimal reproducible debugging: isolate any issue in fetching or parsing API responses
+---
+
+<div align="center">
+Made with ❤️ for the open-source community
+</div>
