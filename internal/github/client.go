@@ -1,39 +1,53 @@
 package github
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
+
+	"GoodFirstGo/internal/models"
 )
 
-type Client struct { //deffining a custom type client (github API client)
+type Client struct { // defining a custom type client (github API client)
 	httpClient *http.Client
 }
 
-func NewClient() *Client { //creating a new client instance, wrapping it inside Client
-	return &Client{ //returning a pointer to it
+func NewClient() *Client { // creating a new client instance, wrapping it inside Client
+	return &Client{ // returning a pointer to it
 		httpClient: &http.Client{},
 	}
 }
 
-func (c *Client) SearchGoodFirstIssues() error { // method on the client
-	url := `https://api.github.com/search/issues?q=label:"good-first-issue"+language:go&per_page=5`
+func (c *Client) SearchIssues(query string, limit int) ([]models.Issue, error) {
+	perPage := strconv.Itoa(limit)
+	url := fmt.Sprintf(`https://api.github.com/search/issues?q=%s&per_page=%s`, query, perPage)
 
-	resp, err := c.httpClient.Get(url) //making a get request using embedded http.Client
+	resp, err := c.httpClient.Get(url) // making a get request using embedded http.Client
 	if err != nil {
-		return fmt.Errorf("feild to make a request: %w", err)
+		return nil, fmt.Errorf("failed to make a request: %w", err)
 	}
-	defer resp.Body.Close() //closing the response body after the function returns to prevent resource leaks
+	defer resp.Body.Close() // closing the response body after the function returns to prevent resource leaks
 
-	fmt.Println("Github API response status:", resp.Status)
-
-	body, err := io.ReadAll(resp.Body) //Reading the response body
-	if err != nil {
-		return err
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("unexpected status code: %s", resp.Status)
 	}
 
-	fmt.Println(string(body))
+	body, err := io.ReadAll(resp.Body) // Reading the response body
+	if err != nil {
+		return nil, err
+	}
 
-	return nil
+	type SearchResponse struct {
+		Items []models.Issue `json:"items"`
+	}
 
+	var searchResp SearchResponse
+	// Unmarshal the JSON response from GitHub API into our Issue structs
+	if err := json.Unmarshal(body, &searchResp); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal JSON: %w", err)
+	}
+
+	return searchResp.Items, nil
 }
