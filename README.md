@@ -153,5 +153,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center">
-Made with ❤️ for the open-source community
+Made with Val for the open-source community
 </div>
