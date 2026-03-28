@@ -32,7 +32,7 @@
 - **Language**: Go 1.21+
 - **HTTP Client**: `net/http` (standard library)
 - **JSON Parsing**: `encoding/json` (standard library)
-- **CLI Framework**: [Cobra](https://github.com/spf13/cobra) or [urfave/cli](https://github.com/urfave/cli)
+**CLI Framework**: [Cobra](https://github.com/spf13/cobra)
 - **GitHub API**: [go-github](https://github.com/google/go-github) (optional)
 
 ---
@@ -68,12 +68,16 @@ go install
 
 ### Basic Search
 ```bash
-# Search for Go issues with 'good-first-issue' label
-goodfirstgo search --language go --label good-first-issue
+# Search for Go issues with 'good-first-issue' label (limit 5 by default)
+goodfirstgo --language go --label good-first-issue
 
-# Search for Python issues with 'help-wanted' label
-goodfirstgo search --language python --label help-wanted
+# Search for Python issues with 'help-wanted' label (limit 10)
+goodfirstgo --language python --label help-wanted --limit 10
+
+# View help
+goodfirstgo --help
 ```
+
 
 ### Advanced Filtering
 ```bash
@@ -153,5 +157,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center">
-Made with Val for the open-source community
+Made by Val for the open-source community
 </div>
