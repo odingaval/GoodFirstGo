@@ -15,10 +15,19 @@ CLI tool to discover beginner-friendly GitHub issues.
 
 ## Install
 
+### Option 1: Download Binaries (Recommended)
+Download the pre-compiled binaries for macOS, Linux, and Windows from the [Releases page](https://github.com/odingaval/GoodFirstGo/releases). Extract the archive and place the `goodfirstgo` executable in your `$PATH`.
+
+### Option 2: Using `go install`
+If you have Go installed, you can install the CLI directly:
 ```bash
-git clone <repo>
+go install github.com/odingaval/GoodFirstGo/cmd/goodfirstgo@latest
+```
+
+### Option 3: From Source
+```bash
+git clone https://github.com/odingaval/GoodFirstGo.git
 cd GoodFirstGo
-go mod tidy
 go build -o goodfirstgo ./cmd/goodfirstgo
 ./goodfirstgo --help
 ```
