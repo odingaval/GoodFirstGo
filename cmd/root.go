@@ -5,50 +5,77 @@ import (
 	"os"
 
 	"GoodFirstGo/internal/github"
+	"GoodFirstGo/internal/resources"
+	"GoodFirstGo/pkg/output"
 
 	"github.com/spf13/cobra"
 )
 
-// Global flags - Cobra binds CLI flags to these vars automatically via Flags().Var()
+// Global flags
 var (
-	limit           int    // --limit: max issues to fetch (default 5)
-	language, label string // --language, --label for GitHub search query
+	limit    int
+	language string
+	label    string
+	learning bool
+	stars    int
+	age      string
 )
 
 var rootCmd = &cobra.Command{
 	Use:   "goodfirstgo",
 	Short: "Find good first issues on GitHub",
 	Long:  `CLI tool to search GitHub repositories for good-first-issue labels by language.`,
-	// Run: executes when command invoked without subcommands (our root behavior)
 	Run: func(cmd *cobra.Command, args []string) {
-		// Build GitHub search query using bound flag values
 		query := fmt.Sprintf(`label:"%s" language:%s`, label, language)
-		fmt.Printf("Fetching %d %s issues with label '%s'...\n", limit, language, label)
+		if stars > 0 {
+			query += fmt.Sprintf(` stars:>%d`, stars)
+		}
+		if age != "" {
+			// GitHub qualifiers: https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests#search-based-on-when-a-issue-or-pull-request-was-created-or-last-updated
+			ageQual := ""
+			switch age {
+			case "recent":
+				ageQual = "created:>=2024-07-01"
+			case "week":
+				ageQual = "created:>=2024-07-22"
+			case "month":
+				ageQual = "created:>=2024-06-23"
+			}
+			if ageQual != "" {
+				query += " " + ageQual
+			}
+		}
+
+		fmt.Printf("Query: %q\n", query)
+		fmt.Printf("Fetching %d %s issues...\n", limit, language)
 
 		client := github.NewClient()
 		issues, err := client.SearchIssues(query, limit)
 		if err != nil {
-			fmt.Fprintln(os.Stderr, "Error fetching issues:", err)
+			fmt.Fprintln(os.Stderr, "Error:", err)
 			os.Exit(1)
 		}
 
-		fmt.Printf("Found %d matching issues:\n", len(issues))
-		for _, issue := range issues {
-			fmt.Printf("- %s (Repo: %s) [%s]\n", issue.Title, issue.Repo.FullName, issue.HTMLURL)
+		if learning {
+			for i := range issues {
+				issues[i].Resources = resources.GetLearningResources(language)
+			}
+			fmt.Println("💡 Learning mode enabled")
 		}
+
+		output.PrintIssues(issues)
 	},
 }
 
-// Execute is the entrypoint called from main.go - starts Cobra's command parsing/execution
 func Execute() error {
-	return rootCmd.Execute() // Parses flags/args, validates, runs matching Run func
+	return rootCmd.Execute()
 }
 
-// init() runs automatically: registers flags on rootCmd
 func init() {
-	// Bind persistent flags to vars (available to root/subcommands)
-	rootCmd.Flags().IntVar(&limit, "limit", 5, "Number of issues to fetch")
-	rootCmd.Flags().StringVar(&language, "language", "go", "Language to search for")
-	rootCmd.Flags().StringVar(&label, "label", "good-first-issue", "Label to search for")
-	// Flags have defaults; no required flags needed
+	rootCmd.Flags().IntVar(&limit, "limit", 5, "Max issues")
+	rootCmd.Flags().StringVar(&language, "language", "go", "Language")
+	rootCmd.Flags().StringVar(&label, "label", "good-first-issue", "Label")
+	rootCmd.Flags().BoolVar(&learning, "learning", false, "Show resources")
+	rootCmd.Flags().IntVar(&stars, "stars", 0, "Min repo stars")
+	rootCmd.Flags().StringVar(&age, "age", "", "Issue age: recent/week/month")
 }
