@@ -3,7 +3,7 @@ package output
 import (
 	"fmt"
 
-	"GoodFirstGo/internal/models"
+	"github.com/odingaval/GoodFirstGo/internal/models"
 )
 
 func PrintIssues(issues []models.Issue) {

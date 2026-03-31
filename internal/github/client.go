@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"time"
 
-	"GoodFirstGo/internal/models"
+	"github.com/odingaval/GoodFirstGo/internal/models"
 )
 
 type Client struct {

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"GoodFirstGo/internal/github"
-	"GoodFirstGo/internal/resources"
-	"GoodFirstGo/pkg/output"
+	"github.com/odingaval/GoodFirstGo/internal/github"
+	"github.com/odingaval/GoodFirstGo/internal/resources"
+	"github.com/odingaval/GoodFirstGo/pkg/output"
 
 	"github.com/spf13/cobra"
 )

@@ -1,4 +1,4 @@
-module GoodFirstGo
+module github.com/odingaval/GoodFirstGo
 
 go 1.22.2
 

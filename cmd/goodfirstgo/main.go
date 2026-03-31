@@ -5,7 +5,7 @@ package main
 import (
 	"os"
 
-	"GoodFirstGo/cmd"
+	"github.com/odingaval/GoodFirstGo/cmd"
 )
 
 func main() {
