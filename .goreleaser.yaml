@@ -1,4 +1,4 @@
-name: GoodFirstGo
+project_name: GoodFirstGo
 
 before:
   hooks:
