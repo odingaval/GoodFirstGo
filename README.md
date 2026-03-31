@@ -23,6 +23,7 @@ If you have Go installed, you can install the CLI directly:
 ```bash
 go install github.com/odingaval/GoodFirstGo/cmd/goodfirstgo@latest
 ```
+*Note: Make sure `$(go env GOPATH)/bin` is in your system `$PATH` to run `goodfirstgo` globally.*
 
 ### Option 3: From Source
 ```bash
@@ -36,17 +37,17 @@ go build -o goodfirstgo ./cmd/goodfirstgo
 
 **Basic**:
 ```bash
-./goodfirstgo --language go --label "good-first-issue" --limit 5
+goodfirstgo --language go --label "good-first-issue" --limit 5
 ```
 
 **Advanced Filtering**:
 ```bash
-./goodfirstgo --language python --stars 100 --age week
+goodfirstgo --language python --stars 100 --age week
 ```
 
 **Learning Mode** (shows language-specific resources):
 ```bash
-./goodfirstgo --language rust --learning
+goodfirstgo --language rust --learning
 ```
 
 ### Full Options
