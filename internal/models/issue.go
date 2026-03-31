@@ -8,4 +8,5 @@ type Issue struct {
 	Repo    struct {
 		FullName string `json:"full_name"`
 	} `json:"repository"`
+	Resources []string `json:"-"` // Computed learning resources
 }
